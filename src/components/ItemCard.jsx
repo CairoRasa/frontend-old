@@ -10,7 +10,7 @@ export default function ItemCard({ image, id, tags, name, description }) {
             {name}
             <div className="badge badge-secondary">NEW</div>
           </h2>
-          <p>{description}</p>
+          <p className="overflow-hidden">{description}</p>
           <div className="card-actions justify-end">
             {tags &&
               tags.map((t) => {

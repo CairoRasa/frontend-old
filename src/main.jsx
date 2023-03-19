@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider,
 } from 'react-router-dom';
 import './index.css';
 import './App.css';
@@ -13,21 +13,28 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/Signup';
 import PostItem from './pages/PostItem';
+import {QueryClient, QueryClientProvider} from "react-query";
+import EditPost from "./pages/EditPost";
 
 const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
-      <Route index element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/admin/post" element={<PostItem />} />
-    </Route>
-  )
+    createRoutesFromElements(
+        <Route path="/" element={<Layout/>}>
+            <Route index element={<Home/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/signup" element={<SignUp/>}/>
+            <Route path="/admin/post" element={<PostItem/>}/>
+            <Route path="/admin/post/edit/:id" element={<EditPost/>}/>
+        </Route>
+    )
 );
 
+const queryClient = new QueryClient()
+
 ReactDOM.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router}/>
+        </QueryClientProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );

@@ -12,6 +12,9 @@ const useAuthStore = create((set, get) => ({
     })
     return res.status === 200;
   },
+  getToken: () => {
+    return get().token
+  },
   currentUser: async () => {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/users/me`, {
       method: 'GET',

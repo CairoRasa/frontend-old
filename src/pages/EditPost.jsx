@@ -4,21 +4,38 @@ import handleImageFile from "../utils/handleImageFile";
 import {useForm} from "react-hook-form";
 import ItemCard from "../components/ItemCard";
 import Alert from "../components/Alert";
+import {useNavigate, useParams} from "react-router-dom";
+import {useQuery} from "react-query";
 
-export default function PostItem() {
+export default function EditPost() {
     const authStore = useAuthStore();
+    const { id } = useParams();
+    const itemQuery =  useQuery("home", async () => {
+        const req = await fetch(`${import.meta.env.VITE_API_URL}/items/${id}`)
+        return await req.json();
+    }, { refetchOnWindowFocus: false })
+    const Navigate = useNavigate();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const [user, setUser] = useState(null);
     const [alertMsg, setAlertMsg] = useState(null);
     const [imageB64, setImageB64] = useState("");
+
+
     useEffect(() => {
         authStore.currentUser().then((res) => {
             if (!res.is_superuser) {
-                window.location.href = "/login";
+                // window.location.href = "/login";
+                Navigate("/login")
             }
             setUser(res);
         });
     }, [])
+
+    useEffect(() => {
+       if (itemQuery.isFetched) {
+           setImageB64(itemQuery.data.image);
+       }
+    }, [itemQuery.isFetched])
 
     async function handleImageChange(event) {
         const file = event.target.files[0];
@@ -34,8 +51,8 @@ export default function PostItem() {
         console.log(data);
         console.log(authStore.token)
 
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/manage/items/`, {
-            method: "POST",
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/manage/items/${id}`, {
+            method: "PATCH",
             body: JSON.stringify(data),
             headers: {
                 "Authorization": "Bearer " + authStore.getToken(),
@@ -50,13 +67,13 @@ export default function PostItem() {
         }
 
         const resJson = await res.json();
-        setAlertMsg("Posted with id: " + resJson._id)
+        setAlertMsg("Edited post id: " + resJson._id)
     }
 
     return (
         <Fragment>
             {/* create a form to submit fooditem with name, description, price, image and category */}
-            <div className="m-3 flex flex-col sm:flex-row justify-center items-center mr-8 ml-8">
+            {itemQuery.isLoading ||  <div className="m-3 flex flex-col sm:flex-row justify-center items-center mr-8 ml-8">
 
                 <div className="sm:mr-3 sm:max-w-xl">
                     <ItemCard
@@ -69,7 +86,7 @@ export default function PostItem() {
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="form-control">
                     <div className="m-3">{alertMsg && <Alert text={alertMsg}/>}</div>
-                    <h1 className="text-3xl font-mono font-bold">Create Food Item</h1>
+                    <h1 className="text-3xl font-mono font-bold">Edit Food Item <code>{id}</code> </h1>
                     <div>
                         <label className="label">
                             <span className="label-text">Name</span>
@@ -82,6 +99,7 @@ export default function PostItem() {
                                 {...register("name")}
                                 type="text"
                                 required
+                                defaultValue={itemQuery.data.name}
                                 name="name"
                                 placeholder="Food Name"
                                 className="input input-bordered w-full"
@@ -100,6 +118,7 @@ export default function PostItem() {
                                 {...register("description")}
                                 required
                                 name="description"
+                                defaultValue={itemQuery.data.description}
                                 // placeholder="Food Description"
                                 className="input input-bordered h-32 w-full"
                             />
@@ -118,6 +137,7 @@ export default function PostItem() {
                                 type="number"
                                 required
                                 name="price"
+                                defaultValue={itemQuery.data.price}
                                 // placeholder="Food Description"
                                 className="input input-bordered w-full"
                             />
@@ -135,7 +155,8 @@ export default function PostItem() {
                                 onChange={handleImageChange}
                                 type="file"
                                 accept="image/*"
-                                required
+                                // required
+                                // defaultValue={itemQuery.data.image}
                                 className="file-input rounded-lg file-input-bordered w-full"
                             />
                         </label>
@@ -153,6 +174,7 @@ export default function PostItem() {
                                 type="text"
                                 required
                                 name="category"
+                                defaultValue={itemQuery.data.category}
                                 // placeholder="Food Description"
                                 className="input input-bordered w-full"
                             />
@@ -171,6 +193,7 @@ export default function PostItem() {
                                 type="text"
                                 required
                                 name="tags"
+                                defaultValue={itemQuery.data.tags.join(" ")}
                                 // placeholder="Food Description"
                                 className="input input-bordered w-full"
                             />
@@ -178,7 +201,7 @@ export default function PostItem() {
                     </div>
                     <button className="mt-3 btn btn-primary" type="submit">Submit</button>
                 </form>
-            </div>
+            </div>}
         </Fragment>
     )
 }
