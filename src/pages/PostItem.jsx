@@ -4,17 +4,20 @@ import handleImageFile from "../utils/handleImageFile";
 import {useForm} from "react-hook-form";
 import ItemCard from "../components/ItemCard";
 import Alert from "../components/Alert";
+import {useNavigate} from "react-router-dom";
 
 export default function PostItem() {
     const authStore = useAuthStore();
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const [user, setUser] = useState(null);
+    const Navigate = useNavigate();
+    const { register, handleSubmit, watch} = useForm();
+    const [, setUser] = useState(null);
     const [alertMsg, setAlertMsg] = useState(null);
     const [imageB64, setImageB64] = useState("");
     useEffect(() => {
         authStore.currentUser().then((res) => {
             if (!res.is_superuser) {
-                window.location.href = "/login";
+                // window.location.href = "/login";
+                Navigate("/login")
             }
             setUser(res);
         });

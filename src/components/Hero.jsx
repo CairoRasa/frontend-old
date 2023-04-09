@@ -32,7 +32,7 @@ export default function Hero() {
     console.log(formData);
     authStore.isLoggedIn().then((res) =>  {
       // console.log(res)
-      if (res == true) {
+      if (res === true) {
         // console.log(res == true)
         setAlert("Login Successful")
       } else {

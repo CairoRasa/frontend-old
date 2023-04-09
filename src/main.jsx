@@ -15,6 +15,7 @@ import SignUp from './pages/Signup';
 import PostItem from './pages/PostItem';
 import {QueryClient, QueryClientProvider} from "react-query";
 import EditPost from "./pages/EditPost";
+import AdminViewItems from "./pages/AdminViewItems";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
             <Route path="/signup" element={<SignUp/>}/>
             <Route path="/admin/post" element={<PostItem/>}/>
             <Route path="/admin/post/edit/:id" element={<EditPost/>}/>
+            <Route path="/admin/items" element={<AdminViewItems/>}/>
         </Route>
     )
 );
