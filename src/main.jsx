@@ -11,7 +11,7 @@ import './App.css';
 import Layout from './components/Layout';
 const Home = React.lazy(() => import('./pages/Home'));
 const Login = React.lazy(() => import('./pages/Login'));
-const SignUp = React.lazy(() => import('./pages/SignUp'));
+const SignUp = React.lazy(() => import('./pages/Signup'));
 const PostItem = React.lazy(() => import('./pages/PostItem'));
 import { QueryClient, QueryClientProvider } from "react-query";
 const EditPost = React.lazy(() => import('./pages/EditPost'));
