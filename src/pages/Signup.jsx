@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import Alert from "../components/Alert";
 
 export default function SignUp() {
@@ -55,23 +55,23 @@ export default function SignUp() {
     }
 
     return (
-        <div className="flex justify-center gap-5 lg:flex-row flex-col mt-4">
-            <div className="mr-3 ml-3">
-                <h1 className="text-4xl mb-2">Sign Up</h1>
-                <div className="mt-3">{alertBox && <Alert text={alertBox}/>}</div>
+        <div className="flex flex-col justify-center gap-5 mt-4 mb-4 lg:flex-row">
+            <div className="ml-3 mr-3">
+                <h1 className="mb-2 text-4xl">Sign Up</h1>
+                <div className="mt-3">{alertBox && <Alert text={alertBox} />}</div>
                 <form onSubmit={onSubmit} className="form-control">
                     <div>
                         <label className="label">
                             <span className="label-text">Name</span>
                         </label>
                         <label className="input-group">
-                            <span className="text-black font-semibold bg-primary">Name</span>
+                            <span className="font-semibold text-black bg-primary">Name</span>
                             <input
                                 type="text"
                                 placeholder="John Doe"
                                 required
                                 name="name"
-                                className="input input-bordered w-full"
+                                className="w-full input input-bordered"
                                 onChange={onInputChange}
                             />
                         </label>
@@ -81,13 +81,13 @@ export default function SignUp() {
                             <span className="label-text">Your Email</span>
                         </label>
                         <label className="input-group">
-                            <span className="text-black font-semibold bg-primary">Email</span>
+                            <span className="font-semibold text-black bg-primary">Email</span>
                             <input
                                 type="text"
                                 placeholder="info@site.com"
                                 required
                                 name="email"
-                                className="input input-bordered w-full"
+                                className="w-full input input-bordered"
                                 onChange={onInputChange}
                             />
                         </label>
@@ -97,15 +97,15 @@ export default function SignUp() {
                             <span className="label-text">Your Password</span>
                         </label>
                         <label className="input-group">
-              <span className="text-black font-semibold bg-primary">
-                Password
-              </span>
+                            <span className="font-semibold text-black bg-primary">
+                                Password
+                            </span>
                             <input
                                 type="password"
                                 required
                                 name="password"
                                 placeholder="your password here"
-                                className="input input-bordered w-full"
+                                className="w-full input input-bordered"
                                 onChange={onInputChange}
                             />
                         </label>
@@ -115,20 +115,20 @@ export default function SignUp() {
                             <span className="label-text">Confirm Password</span>
                         </label>
                         <label className="input-group">
-              <span className="text-black font-semibold bg-primary">
-                Password
-              </span>
+                            <span className="font-semibold text-black bg-primary">
+                                Password
+                            </span>
                             <input
                                 type="password"
                                 required
                                 name="password_confirm"
                                 placeholder="type same password again"
-                                className="input input-bordered w-full"
+                                className="w-full input input-bordered"
                                 onChange={onInputChange}
                             />
                         </label>
                     </div>
-                    <button className="btn mt-4 btn-primary" type="submit">
+                    <button className="mt-4 btn btn-primary" type="submit">
                         Signup
                     </button>
                 </form>
@@ -151,11 +151,11 @@ export default function SignUp() {
                     <input
                         type="password"
                         required
-                        className="input input-bordered w-full"
+                        className="w-full input input-bordered"
                         name="Verify Token"
                         placeholder="Token sent to the email for verification"
                     />
-                    <button className="btn mt-4 btn-primary" type="submit">
+                    <button className="mt-4 btn btn-primary" type="submit">
                         Verify
                     </button>
                 </form>

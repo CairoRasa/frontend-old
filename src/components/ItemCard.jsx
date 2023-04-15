@@ -1,9 +1,10 @@
 import ReactMarkdown from "react-markdown";
+import { Link } from "react-router-dom";
 
 export default function ItemCard({image, id, tags, name, description}) {
     return (
-        <a href={`/${id}`}>
-            <div className="card w-auto bg-base-100 shadow-xl">
+        <Link to={`/${id}`}>
+            <div className="w-auto shadow-xl card bg-base-100">
                 <figure>
                     <img src={image} alt="Food Image"/>
                 </figure>
@@ -17,7 +18,7 @@ export default function ItemCard({image, id, tags, name, description}) {
                             {description}
                         </ReactMarkdown>
                     </p>
-                    <div className="card-actions justify-end">
+                    <div className="justify-end card-actions">
                         {tags &&
                             tags.map((t, idx) => {
                                 return <div key={idx} className="badge badge-outline">{t}</div>;
@@ -25,6 +26,6 @@ export default function ItemCard({image, id, tags, name, description}) {
                     </div>
                 </div>
             </div>
-        </a>
+        </Link>
     );
 }

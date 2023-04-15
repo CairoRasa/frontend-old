@@ -5,7 +5,7 @@ import {useQuery} from "react-query";
 
 export default function Home() {
     const homeQuery = useQuery("home", async () => {
-        const req = await fetch(`http://localhost:5000/items/`)
+        const req = await fetch(`${import.meta.env.VITE_API_URL}/items/`)
         return await req.json();
     }, { refetchOnWindowFocus: false })
   return (

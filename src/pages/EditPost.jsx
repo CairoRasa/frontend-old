@@ -1,16 +1,17 @@
-import {Fragment, useEffect, useState} from "react";
+import { Fragment, useEffect, useState } from "react";
 import useAuthStore from "../stores/useAuthStore";
 import handleImageFile from "../utils/handleImageFile";
-import {useForm} from "react-hook-form";
-import ItemCard from "../components/ItemCard";
-import Alert from "../components/Alert";
-import {useNavigate, useParams} from "react-router-dom";
-import {useQuery} from "react-query";
+import { useForm } from "react-hook-form";
+import React from 'react';
+const ItemCard = React.lazy(() => import('../components/ItemCard'));
+const Alert = React.lazy(() => import('../components/Alert'));
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "react-query";
 
 export default function EditPost() {
     const authStore = useAuthStore();
     const { id } = useParams();
-    const itemQuery =  useQuery("home", async () => {
+    const itemQuery = useQuery("home", async () => {
         const req = await fetch(`${import.meta.env.VITE_API_URL}/items/${id}`)
         return await req.json();
     }, { refetchOnWindowFocus: false })
@@ -32,9 +33,9 @@ export default function EditPost() {
     }, [])
 
     useEffect(() => {
-       if (itemQuery.isFetched) {
-           setImageB64(itemQuery.data.image);
-       }
+        if (itemQuery.isFetched) {
+            setImageB64(itemQuery.data.image);
+        }
     }, [itemQuery.isFetched])
 
     async function handleImageChange(event) {
@@ -73,28 +74,33 @@ export default function EditPost() {
     return (
         <Fragment>
             {/* create a form to submit fooditem with name, description, price, image and category */}
-            {itemQuery.isLoading ||  <div className="m-3 flex flex-col sm:flex-row justify-center items-center mr-8 ml-8">
+            {itemQuery.isLoading || <div className="flex flex-col items-center justify-center m-3 ml-8 mr-8 sm:flex-row">
 
                 <div className="sm:mr-3 sm:max-w-xl">
-                    <ItemCard
-                        id="#"
-                        image={imageB64}
-                        description={watch("description", false)}
-                        name={watch("name", false)}
-                        tags={watch("tags") ? watch("tags").split(" ") : undefined}
-                    />
+                    <React.Suspense fallback={<>...</>}>
+                        <ItemCard
+                            id="#"
+                            image={imageB64}
+                            description={watch("description", false)}
+                            name={watch("name", false)}
+                            tags={watch("tags") ? watch("tags").split(" ") : undefined}
+                        />
+                    </React.Suspense>
                 </div>
                 <form onSubmit={handleSubmit(onSubmit)} className="form-control">
-                    <div className="m-3">{alertMsg && <Alert text={alertMsg}/>}</div>
-                    <h1 className="text-3xl font-mono font-bold">Edit Food Item <code>{id}</code> </h1>
+                    <div className="m-3">
+                        {alertMsg && <React.Suspense fallback={<>...</>}>
+                            <Alert text={alertMsg} />
+                        </React.Suspense>}</div>
+                    <h1 className="font-mono text-3xl font-bold">Edit Food Item <code>{id}</code> </h1>
                     <div>
                         <label className="label">
                             <span className="label-text">Name</span>
                         </label>
                         <label className="input-group">
-                        <span className="text-black font-semibold bg-primary">
-                            Name
-                        </span>
+                            <span className="font-semibold text-black bg-primary">
+                                Name
+                            </span>
                             <input
                                 {...register("name")}
                                 type="text"
@@ -102,7 +108,7 @@ export default function EditPost() {
                                 defaultValue={itemQuery.data.name}
                                 name="name"
                                 placeholder="Food Name"
-                                className="input input-bordered w-full"
+                                className="w-full input input-bordered"
                             />
                         </label>
                     </div>
@@ -111,16 +117,16 @@ export default function EditPost() {
                             <span className="label-text">Description</span>
                         </label>
                         <label className="input-group">
-                        <span className="text-black font-semibold bg-primary">
-                            Description
-                        </span>
+                            <span className="font-semibold text-black bg-primary">
+                                Description
+                            </span>
                             <textarea
                                 {...register("description")}
                                 required
                                 name="description"
                                 defaultValue={itemQuery.data.description}
                                 // placeholder="Food Description"
-                                className="input input-bordered h-32 w-full"
+                                className="w-full h-32 input input-bordered"
                             />
                         </label>
                     </div>
@@ -129,9 +135,9 @@ export default function EditPost() {
                             <span className="label-text">Price</span>
                         </label>
                         <label className="input-group">
-                        <span className="text-black font-semibold bg-primary">
-                            Price
-                        </span>
+                            <span className="font-semibold text-black bg-primary">
+                                Price
+                            </span>
                             <input
                                 {...register("price")}
                                 type="number"
@@ -139,7 +145,7 @@ export default function EditPost() {
                                 name="price"
                                 defaultValue={itemQuery.data.price}
                                 // placeholder="Food Description"
-                                className="input input-bordered w-full"
+                                className="w-full input input-bordered"
                             />
                         </label>
                     </div>
@@ -148,7 +154,7 @@ export default function EditPost() {
                             <span className="label-text">Image</span>
                         </label>
                         <label className="input-group">
-                            {/*<span className="text-black font-semibold bg-primary">*/}
+                            {/*<span className="font-semibold text-black bg-primary">*/}
                             {/*    Image*/}
                             {/*</span>*/}
                             <input
@@ -157,7 +163,7 @@ export default function EditPost() {
                                 accept="image/*"
                                 // required
                                 // defaultValue={itemQuery.data.image}
-                                className="file-input rounded-lg file-input-bordered w-full"
+                                className="w-full rounded-lg file-input file-input-bordered"
                             />
                         </label>
                     </div>
@@ -166,9 +172,9 @@ export default function EditPost() {
                             <span className="label-text">Category </span>
                         </label>
                         <label className="input-group">
-                        <span className="text-black font-semibold bg-primary">
-                            Category
-                        </span>
+                            <span className="font-semibold text-black bg-primary">
+                                Category
+                            </span>
                             <input
                                 {...register("category")}
                                 type="text"
@@ -176,7 +182,7 @@ export default function EditPost() {
                                 name="category"
                                 defaultValue={itemQuery.data.category}
                                 // placeholder="Food Description"
-                                className="input input-bordered w-full"
+                                className="w-full input input-bordered"
                             />
                         </label>
                     </div>
@@ -185,9 +191,9 @@ export default function EditPost() {
                             <span className="label-text">Tags (use each tag with spaces) </span>
                         </label>
                         <label className="input-group">
-                        <span className="text-black font-semibold bg-primary">
-                            Tags
-                        </span>
+                            <span className="font-semibold text-black bg-primary">
+                                Tags
+                            </span>
                             <input
                                 {...register("tags")}
                                 type="text"
@@ -195,7 +201,7 @@ export default function EditPost() {
                                 name="tags"
                                 defaultValue={itemQuery.data.tags.join(" ")}
                                 // placeholder="Food Description"
-                                className="input input-bordered w-full"
+                                className="w-full input input-bordered"
                             />
                         </label>
                     </div>

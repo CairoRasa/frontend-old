@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './Hero.css';
 import useAuthStore from '../stores/useAuthStore';
 import Alert from './Alert';
+import { Link } from 'react-router-dom';
 
 export default function Hero() {
   const [formData, setFormData] = useState({});
@@ -45,11 +46,11 @@ export default function Hero() {
     <div
       className="hero bg-base-200"
       style={{
-        backgroundImage: "url('https://files.catbox.moe/2kdm9j.png')",
+        backgroundImage: "url('home-bg.png')",
       }}
     >
-      <div className="hero-content flex-col lg:flex-row-reverse ">
-        <div className="text-center lg:text-left z-0">
+      <div className="flex-col hero-content lg:flex-row-reverse ">
+        <div className="z-0 text-center lg:text-left">
           <h1 className="text-5xl font-bold img_text">
             The ultimate destination for lovers of Indonesian cuisine in Egypt!
           </h1>
@@ -60,7 +61,7 @@ export default function Hero() {
             capture the essence of this rich and vibrant culinary tradition.
           </p>
         </div>
-        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+        <div className="flex-shrink-0 w-full max-w-sm shadow-2xl card bg-base-100">
           <div className="card-body">
           {alert && <Alert text={alert} />}
             <div className="form-control">
@@ -89,15 +90,15 @@ export default function Hero() {
                 className="input input-bordered"
               />
               <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
+                <Link to="#" className="label-text-alt link link-hover">
                   Forgot password?
-                </a>
-                <a href="/signup" className="label-text-alt link link-hover">
+                </Link>
+                <Link to="/signup" className="label-text-alt link link-hover">
                   New here? Sign Up
-                </a>
+                </Link>
               </label>
             </div>
-            <div className="form-control mt-6">
+            <div className="mt-6 form-control">
               <button onClick={onSubmit} className="btn btn-primary">Login</button>
             </div>
           </div>
